@@ -4,7 +4,7 @@ After=network-online.target
 
 [Service]
 WorkingDirectory=/home/ubuntu
-ExecStart=/usr/bin/bash /home/ubuntu/mbta/bin/run_server.sh
+ExecStart=/usr/bin/bash /home/ubuntu/mbta_service/mbta/bin/run_service.sh
 Restart=always
 StandardOutput=syslog
 StandardError=syslog

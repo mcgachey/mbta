@@ -1,4 +1,4 @@
-secure
+secure.sh
 virtualenv
 .DS_Store
 .key

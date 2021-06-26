@@ -11,7 +11,7 @@ EMAIL=phil@mcgachey.net
 
 sudo apt update
 sudo apt upgrade
-sudo apt install -y python3-venv redis-server snapd
+sudo apt install -y python3-venv snapd
 
 # The service has the following structure:
 # ~/mbta_service
@@ -20,7 +20,9 @@ sudo apt install -y python3-venv redis-server snapd
 #      -> virtualenv  <-- Not strictly necessary since there's only one service running on the host, but helps to keep
 #                         things consistent with the local dev environment
 mkdir ~/mbta_service
+mkdir ~/mbta_service/logs
 python3 -m venv ~/mbta_service/virtualenv
+cd ~/mbta_service
 git clone https://github.com/mcgachey/mbta.git
 
 # Create a system service to run the web app
