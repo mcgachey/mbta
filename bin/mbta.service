@@ -1,0 +1,16 @@
+[Unit]
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+WorkingDirectory=/home/ubuntu
+ExecStart=/usr/bin/bash /home/ubuntu/mbta/bin/run_server.sh
+Restart=always
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=MBTA
+User=ubuntu
+Group=ubuntu
+
+[Install]
+WantedBy=multi-user.target

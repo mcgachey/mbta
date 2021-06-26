@@ -1,0 +1,28 @@
+server {
+        listen 443 ssl;
+        ssl_certificate /etc/letsencrypt/live/mbta.mcgachey.org/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/mbta.mcgachey.org/privkey.pem;
+
+        root /var/www/html;
+
+        server_name mbta.mcgachey.org;
+
+        location /static {
+            alias /var/www/html/static;
+        }
+
+        location / {
+            try_files $uri @wsgi;
+        }
+
+        location @wsgi {
+            proxy_pass http://unix:/tmp/gunicorn.sock;
+            include proxy_params;
+        }
+
+        location ~* .(ogg|ogv|svg|svgz|eot|otf|woff|mp4|ttf|css|rss|atom|js|jpg|jpeg|gif|png|ico|zip|tgz|gz|rar|bz2|doc|xls|exe|ppt|tar|mid|midi|wav|bmp|rtf)$ {
+            access_log off;
+            log_not_found off;
+            expires max;
+        }
+}
