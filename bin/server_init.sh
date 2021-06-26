@@ -5,6 +5,7 @@
 #  - 512 MB RAM, 1 vCPU, 20 GB SSD.
 #  - Lightsail Static IP.
 #  - DNS A record registered and pointing to the static IP.
+#  - HTTPS port 443 open in the firewall
 
 DOMAIN=mbta.mcgachey.org
 EMAIL=phil@mcgachey.net

@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
 
-MBTA_API_KEY=
+FLASK_SECRET_KEY= # Randomly generated key, used to sign cookies (we're not using any here, but it's good practice)
+MBTA_API_KEY=     # API key from https://api-v3.mbta.com/
