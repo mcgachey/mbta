@@ -8,7 +8,7 @@ server {
         server_name mbta.mcgachey.org;
 
         location /static {
-            alias /var/www/html/static;
+            alias /home/ubuntu/mbta_service/mbta/src/static;
         }
 
         location / {

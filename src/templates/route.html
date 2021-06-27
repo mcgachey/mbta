@@ -1,43 +1,82 @@
 {% extends "base.html" %}
 
 {% block body %}
+<div style="background-color: #{{ route.color }}; color: #{{ route.text_color }}">
+    <h1>{{ route.long_name }}</h1>
+</div>
+
 
 <table id="stop_table" class="cell-border compact hover" data-page-length="25">
     <thead>
     <tr>
         <th>Name</th>
+        <th>Address</th>
         <th>Stop ID</th>
     </tr>
     </thead>
     <tbody class="table_body">
     {% for stop in stops %}
-    <tr onclick="window.location = '/routes/{{ route.route_id }}'">
-        <td class="centered_column">{{ route | route_type_icon | safe }}</td>
-
+    <tr
+            id="stop_table_row_{{ stop.stop_id }}"
+            onclick="showModal('{{ stop.stop_id }}');"
+            data-name="{{ stop.name }}"
+            data-address="{{ stop.address }}"
+            data-description="{% if stop.description %}{{ stop.description }}{% else %}{% endif %}"
+            data-lon="{{ stop.longitude }}"
+            data-lat="{{ stop.latitude }}"
+    >
         <td class="centered_column">
             <div class="badge" style="background-color: #{{ route.color }}; color: #{{ route.text_color }}">
-                {{ route.long_name }}
+                {{ stop.name }}
             </div>
         </td>
-
         <td class="centered_column">
-            <div class="badge" style="background-color: #{{ route.color }}; color: #{{ route.text_color }}">
-                {{ route | route_destination }}
-            </div>
+                {{ stop.address }}
         </td>
-
         <td class="centered_column">
-            <div class="badge" style="background-color: #{{ route.color }}; color: #{{ route.text_color }}">
-                {{ route.route_id }}
-            </div>
+                {{ stop.stop_id }}
         </td>
     </tr>
     {% endfor %}
     </tbody>
 </table>
 
+
+<div class="modal fade" id="stopDetailModal" tabindex="-1" role="dialog" aria-labelledby="stopDetailModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="stopDetailModalTitle"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="stopDetailAddress" class="centered_column"></div>
+                <iframe id="stopDetailMap" width="450" height="250" frameborder="0" style="border:0" src=""
+                        allowfullscreen></iframe>
+                <div id="stopDetailDescription" class="centered_column"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 {% endblock %}
 
 {% block scripts %}
-    $(document).ready(function() { $('#route_table').DataTable(); });
+    $(document).ready(function() { $('#stop_table').DataTable(); });
+
+    function showModal(stopId) {
+        var row = $("#stop_table_row_" + stopId);
+        $("#stopDetailModalTitle").text(row.data("name"));
+        $("#stopDetailAddress").text(row.data("address"));
+        $("#stopDetailDescription").text(row.data("description"));
+        $("#stopDetailMap").attr("src", "https://www.google.com/maps/embed/v1/streetview?key={{ google_api_key }}&location=" + row.data("lat") + "," + row.data("lon"));
+        $("#stopDetailModal").modal('show');
+    }
 {% endblock %}

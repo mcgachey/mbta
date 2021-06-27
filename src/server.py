@@ -42,7 +42,7 @@ def handle_any_error(e):
 @app.route('/', methods=['GET'])
 def index():
     context = {
-        'routes': mbta_api.routes()
+        'routes': mbta_api.routes(request.args.get('route_type'))
     }
     return render_template('index.html', **context)
 
@@ -52,8 +52,9 @@ def route(route_id):
     context = {
         'route': mbta_api.route(route_id),
         'stops': mbta_api.stops(route_id),
+        'google_api_key': os.environ.get('GOOGLE_API_KEY')
     }
-    return render_template('index.html', **context)
+    return render_template('route.html', **context)
 
 
 @app.template_filter('route_type_icon')
@@ -71,12 +72,6 @@ def route_type_icon_filter(route):
 @app.template_filter('route_destination')
 def route_type_icon_filter(route):
     return ', '.join(route.destinations)
-
-
-# @app.route('/ajax/routes', methods=['GET'])
-# def routes():
-#     logging.info("Sendin routes")
-#     return jsonify({'data': [{r.to_dict()} for r in mbta_api.routes()]})
 
 
 logging.info("Started Gunicorn worker")

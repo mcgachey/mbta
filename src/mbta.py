@@ -39,21 +39,37 @@ class Stop(object):
     Model object representing a stop in the MBTA API.
     """
     # Attributes to request from the API. We want this to be the minimum set of fields that we'll need
-    fields = ['name', 'route']
+    fields = [
+        'address',
+        'at_street',
+        'description',
+        'latitude',
+        'longitude',
+        'municipality',
+        'name',
+        'on_street',
+        'platform_name',
+    ]
 
     def __init__(self, record: dict):
         attributes = record.get('attributes', {})
-        relationships = record.get('relationships', {})
         self.stop_id = record.get('id')
+        self.at_street = attributes.get('at_street', '')
+        self.address = attributes.get('address', '')
+        self.description = attributes.get('description', '')
+        self.latitude = attributes.get('latitude')
+        self.longitude = attributes.get('longitude')
+        self.municipality = attributes.get('municipality', '')
         self.name = attributes.get('name')
-        self.route = relationships.get('route', {}).get('data', {}).get('id')
+        self.on_street = attributes.get('on_street', '')
+        self.platform_name = attributes.get('platform_name', '')
 
 
 class MbtaApi(object):
     def __init__(self, api_key: str):
         self._api_key = api_key
 
-    def routes(self) -> typing.List[Route]:
+    def routes(self, route_type=None) -> typing.List[Route]:
         """
         Get a list of all routes from the API. This method handles pagination.
 
@@ -64,6 +80,7 @@ class MbtaApi(object):
             url='https://api-v3.mbta.com/routes',
             query_params={
                 'fields[route]': ','.join(Route.fields),
+                'filter[type]': route_type
             },
             model=Route,
         )
@@ -81,7 +98,7 @@ class MbtaApi(object):
                 'fields[route]': ','.join(Route.fields),
             },
         )
-        return Route(route_data)
+        return Route(route_data.get('data', {}))
 
     def stops(self, route_id: str) -> typing.List[Stop]:
         """
@@ -93,7 +110,6 @@ class MbtaApi(object):
         return self._all_pages(
             url='https://api-v3.mbta.com/stops',
             query_params={
-                'include': 'route',
                 'filter[route]': route_id,
                 'fields[stop]': ','.join(Stop.fields)
             },
