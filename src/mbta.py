@@ -14,7 +14,7 @@ class Route(object):
     Model object representing a route in the MBTA API.
     """
     # Attributes to request from the API. We want this to be the minimum set of fields that we'll need
-    fields = ['color', 'text_color', 'long_name', 'sort_order', 'type']
+    fields = ['color', 'text_color', 'long_name', 'sort_order', 'type', 'direction_destinations']
 
     def __init__(self, record: dict):
         attributes = record.get('attributes', {})
@@ -23,6 +23,7 @@ class Route(object):
         self.text_color = attributes.get('text_color', 'FFFFFF')
         self.long_name = attributes.get('long_name')
         self.sort_order = attributes.get('sort_order', 0)
+        self.destinations = attributes.get('direction_destinations', [])
         self.type = {
             0: 'Light Rail',
             1: 'Heavy Rail',
@@ -32,15 +33,6 @@ class Route(object):
             5: 'Unknown',
         }.get(attributes.get('type', 5))
 
-    # def to_dict(self):
-    #     return {
-    #         'route_id': self.route_id,
-    #         'color': self.color,
-    #         'text_color': self.text_color,
-    #         'long_name': self.long_name,
-    #         'sort_order': self.sort_order,
-    #         'type': self.type,
-    #     }
 
 class Stop(object):
     """
@@ -75,6 +67,21 @@ class MbtaApi(object):
             },
             model=Route,
         )
+
+    def route(self, route_id) -> Route:
+        """
+        Get data for a single route from the API.
+
+        :return: a route object for the requested route
+        :raise UnexpectedServerResponseException: If the server did not respond with the expected status code.
+        """
+        route_data = self._get(
+            url=f"https://api-v3.mbta.com/routes/{route_id}",
+            query_params={
+                'fields[route]': ','.join(Route.fields),
+            },
+        )
+        return Route(route_data)
 
     def stops(self, route_id: str) -> typing.List[Stop]:
         """

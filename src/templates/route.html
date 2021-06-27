@@ -2,17 +2,15 @@
 
 {% block body %}
 
-<table id="route_table" class="cell-border compact hover" data-page-length="25">
+<table id="stop_table" class="cell-border compact hover" data-page-length="25">
     <thead>
     <tr>
-        <th>Type</th>
         <th>Name</th>
-        <th>Destinations</th>
-        <th>Route ID</th>
+        <th>Stop ID</th>
     </tr>
     </thead>
     <tbody class="table_body">
-    {% for route in routes %}
+    {% for stop in stops %}
     <tr onclick="window.location = '/routes/{{ route.route_id }}'">
         <td class="centered_column">{{ route | route_type_icon | safe }}</td>
 

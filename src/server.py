@@ -47,6 +47,32 @@ def index():
     return render_template('index.html', **context)
 
 
+@app.route('/routes/<route_id>', methods=['GET'])
+def route(route_id):
+    context = {
+        'route': mbta_api.route(route_id),
+        'stops': mbta_api.stops(route_id),
+    }
+    return render_template('index.html', **context)
+
+
+@app.template_filter('route_type_icon')
+def route_type_icon_filter(route):
+    return {
+        'Light Rail': '<i class="fas fa-tram"></i>',
+        'Heavy Rail': '<i class="fas fa-subway"></i>',
+        'Commuter Rail': '<i class="fas fa-train"></i>',
+        'Bus': '<i class="fas fa-bus"></i>',
+        'Ferry': '<i class="fas fa-ship"></i>',
+        'Unknown': '<i class="fas fa-question"></i>',
+    }.get(route.type, 'Unknown')
+
+
+@app.template_filter('route_destination')
+def route_type_icon_filter(route):
+    return ', '.join(route.destinations)
+
+
 # @app.route('/ajax/routes', methods=['GET'])
 # def routes():
 #     logging.info("Sendin routes")

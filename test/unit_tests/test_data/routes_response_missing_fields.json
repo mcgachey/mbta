@@ -1,0 +1,17 @@
+{
+  "data": [
+    {
+      "attributes": {
+      },
+      "id": "Red"
+    },
+    {
+      "attributes": {
+      },
+      "id": "Mattapan"
+    }
+  ],
+  "jsonapi": {
+    "version": "1.0"
+  }
+}
