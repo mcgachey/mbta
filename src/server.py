@@ -42,6 +42,7 @@ def handle_any_error(e):
 @app.route('/', methods=['GET'])
 def index():
     context = {
+        'title': 'MBTA Explorer',
         'routes': mbta_api.routes(request.args.get('route_type'))
     }
     return render_template('index.html', **context)
@@ -49,8 +50,10 @@ def index():
 
 @app.route('/routes/<route_id>', methods=['GET'])
 def route(route_id):
+    route_data = mbta_api.route(route_id)
     context = {
-        'route': mbta_api.route(route_id),
+        'title': route_data.long_name,
+        'route': route_data,
         'stops': mbta_api.stops(route_id),
         'google_api_key': os.environ.get('GOOGLE_API_KEY')
     }
