@@ -1,4 +1,4 @@
-from flask import Blueprint, Flask, render_template, send_file, request, redirect, Response, jsonify
+from flask import Flask, render_template, request
 import logging
 import os
 import uuid
@@ -74,7 +74,7 @@ def route_type_icon_filter(route):
 
 @app.template_filter('route_destination')
 def route_type_icon_filter(route):
-    return ', '.join(route.destinations)
+    return ', '.join(route.destinations) if route.destinations else ''
 
 
 logging.info("Started Gunicorn worker")

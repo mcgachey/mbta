@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
 
-FLASK_SECRET_KEY= # Randomly generated key, used to sign cookies (we're not using any here, but it's good practice)
-MBTA_API_KEY=     # API key from https://api-v3.mbta.com/
+export FLASK_SECRET_KEY= # Randomly generated key, used to sign cookies (we're not using any now, but it's as well to keep it secret in case we do later)
+export MBTA_API_KEY=     # API key from https://api-v3.mbta.com/
+export GOOGLE_API_KEY=   # Google API key with access to embed maps

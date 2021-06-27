@@ -2,13 +2,14 @@
 
 {% block body %}
 <div style="background-color: #{{ route.color }}; color: #{{ route.text_color }}">
-    <h1>{{ route.long_name }}</h1>
+    <h1 class="centered_column">{{ route.long_name }}</h1>
 </div>
 
 
 <table id="stop_table" class="cell-border compact hover" data-page-length="25">
     <thead>
     <tr>
+        <th>Stop</th>
         <th>Name</th>
         <th>Address</th>
         <th>Stop ID</th>
@@ -26,12 +27,15 @@
             data-lat="{{ stop.latitude }}"
     >
         <td class="centered_column">
+                {{ loop.index }}
+        </td>
+        <td class="centered_column">
             <div class="badge" style="background-color: #{{ route.color }}; color: #{{ route.text_color }}">
                 {{ stop.name }}
             </div>
         </td>
         <td class="centered_column">
-                {{ stop.address }}
+                {% if stop.address %}{{ stop.address }}{% endif %}
         </td>
         <td class="centered_column">
                 {{ stop.stop_id }}

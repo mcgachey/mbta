@@ -3,6 +3,7 @@ import os
 import responses
 import unittest
 
+import errors
 import mbta
 
 
@@ -55,10 +56,10 @@ class RouteTestCase(unittest.TestCase):
     def test_unexpected_server_response(self):
         test_data = _read_test_data('internal_server_error_response.json')
         responses.add(responses.GET, 'https://api-v3.mbta.com/routes', json=test_data, status=500)
-        with self.assertRaises(mbta.UnexpectedServerResponseException):
+        with self.assertRaises(errors.UnexpectedServerResponseException):
             try:
-                routes = self.mbta.routes()
-            except mbta.UnexpectedServerResponseException as err:
+                self.mbta.routes()
+            except errors.UnexpectedServerResponseException as err:
                 assert err.status_code == 500
                 raise
 

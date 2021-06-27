@@ -2,18 +2,15 @@ import json
 import requests
 import typing
 
-
-class UnexpectedServerResponseException(Exception):
-    def __init__(self, response: requests.Response):
-        self.status_code = response.status_code
-        self.body = response.text
+import errors
 
 
 class Route(object):
     """
     Model object representing a route in the MBTA API.
     """
-    # Attributes to request from the API. We want this to be the minimum set of fields that we'll need
+    # Attributes to request from the API. We want this to be the minimum set of fields that we'll need to reduce
+    # network cost
     fields = ['color', 'text_color', 'long_name', 'sort_order', 'type', 'direction_destinations']
 
     def __init__(self, record: dict):
@@ -41,27 +38,19 @@ class Stop(object):
     # Attributes to request from the API. We want this to be the minimum set of fields that we'll need
     fields = [
         'address',
-        'at_street',
-        'description',
         'latitude',
         'longitude',
-        'municipality',
         'name',
-        'on_street',
         'platform_name',
     ]
 
     def __init__(self, record: dict):
         attributes = record.get('attributes', {})
         self.stop_id = record.get('id')
-        self.at_street = attributes.get('at_street', '')
         self.address = attributes.get('address', '')
-        self.description = attributes.get('description', '')
         self.latitude = attributes.get('latitude')
         self.longitude = attributes.get('longitude')
-        self.municipality = attributes.get('municipality', '')
         self.name = attributes.get('name')
-        self.on_street = attributes.get('on_street', '')
         self.platform_name = attributes.get('platform_name', '')
 
 
@@ -171,4 +160,4 @@ class MbtaApi(object):
         )
         if response.status_code == expected_status:
             return response.json()
-        raise UnexpectedServerResponseException(response)
+        raise errors.UnexpectedServerResponseException(response)
