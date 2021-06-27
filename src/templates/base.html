@@ -29,9 +29,22 @@
 
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
 
-    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='mbta.css')}}">
-
     {% block imports %}{% endblock %}
+
+    <style>
+        body {
+            background-color: #eeeeee;
+        }
+
+        #base_body {
+            width: 75%;
+            margin: auto;
+        }
+
+        .centered_column {
+            text-align: center;
+        }
+    </style>
 
     <title>{{ title }}</title>
 </head>
@@ -39,30 +52,31 @@
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="/">Home</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+    <a class="navbar-brand" href="/">Home</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item">
-        <a class="nav-link" href="/?route_type=0">Light Rail</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/?route_type=1">Heavy Rail</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/?route_type=2">Commuter Rail</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/?route_type=3">Bus</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/?route_type=4">Ferry</a>
-      </li>
-    </ul>
-  </div>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/?route_type=0">Light Rail</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/?route_type=1">Subway</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/?route_type=2">Commuter Rail</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/?route_type=3">Bus</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/?route_type=4">Ferry</a>
+            </li>
+        </ul>
+    </div>
 </nav>
 
 
@@ -75,6 +89,7 @@
 
 <script>
     {% block scripts %}{% endblock %}
+
 
 
 
